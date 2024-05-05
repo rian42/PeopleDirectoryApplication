@@ -1,0 +1,226 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Private\\PeopleDirectoryApplication\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|c:\\private\\peopledirectoryapplication\\views\\personmanagement\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|solutionrelative:views\\personmanagement\\profile.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|c:\\private\\peopledirectoryapplication\\wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}",
+      "RelativeMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|solutionrelative:wwwroot\\css\\site.css||{A5401142-F49D-43DB-90B1-F57BA349E55C}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|c:\\private\\peopledirectoryapplication\\views\\personmanagement\\persons.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|solutionrelative:views\\personmanagement\\persons.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|c:\\private\\peopledirectoryapplication\\views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|solutionrelative:views\\account\\login.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|c:\\private\\peopledirectoryapplication\\controllers\\personmanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|solutionrelative:controllers\\personmanagementcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|c:\\private\\peopledirectoryapplication\\repositories\\personrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|solutionrelative:repositories\\personrepository.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|c:\\private\\peopledirectoryapplication\\views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}",
+      "RelativeMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|solutionrelative:views\\shared\\_layout.cshtml||{40D31677-CBC0-4297-A9EF-89D907823A98}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|c:\\private\\peopledirectoryapplication\\controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|solutionrelative:controllers\\homecontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|c:\\private\\peopledirectoryapplication\\controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|solutionrelative:controllers\\accountcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|c:\\private\\peopledirectoryapplication\\peopledirectoryapplication\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}",
+      "RelativeMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|solutionrelative:peopledirectoryapplication\\readme.md||{EFC0BB08-EA7D-40C6-A696-C870411A895B}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|c:\\private\\peopledirectoryapplication\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|c:\\private\\peopledirectoryapplication\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{25258BDD-82A7-49DC-8C3E-5D75F3887A2F}|PeopleDirectoryApplication.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 2,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "site.css",
+              "DocumentMoniker": "C:\\Private\\PeopleDirectoryApplication\\wwwroot\\css\\site.css",
+              "RelativeDocumentMoniker": "wwwroot\\css\\site.css",
+              "ToolTip": "C:\\Private\\PeopleDirectoryApplication\\wwwroot\\css\\site.css",
+              "RelativeToolTip": "wwwroot\\css\\site.css",
+              "ViewState": "AQIAAB4AAAAAAAAAAAAAAEYAAAARAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003000|",
+              "WhenOpened": "2024-05-05T18:48:56.999Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "Login.cshtml",
+              "DocumentMoniker": "C:\\Private\\PeopleDirectoryApplication\\Views\\Account\\Login.cshtml",
+              "RelativeDocumentMoniker": "Views\\Account\\Login.cshtml",
+              "ToolTip": "C:\\Private\\PeopleDirectoryApplication\\Views\\Account\\Login.cshtml",
+              "RelativeToolTip": "Views\\Account\\Login.cshtml",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAgAAAAjAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-05T18:50:03.413Z",
+              "IsPinned": true,
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "Profile.cshtml",
+              "DocumentMoniker": "C:\\Private\\PeopleDirectoryApplication\\Views\\PersonManagement\\Profile.cshtml",
+              "RelativeDocumentMoniker": "Views\\PersonManagement\\Profile.cshtml",
+              "ToolTip": "C:\\Private\\PeopleDirectoryApplication\\Views\\PersonManagement\\Profile.cshtml",
+              "RelativeToolTip": "Views\\PersonManagement\\Profile.cshtml",
+              "ViewState": "AQIAAGwAAAAAAAAAAAAAAHsAAAASAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-05T19:12:07.399Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "_Layout.cshtml",
+              "DocumentMoniker": "C:\\Private\\PeopleDirectoryApplication\\Views\\Shared\\_Layout.cshtml",
+              "RelativeDocumentMoniker": "Views\\Shared\\_Layout.cshtml",
+              "ToolTip": "C:\\Private\\PeopleDirectoryApplication\\Views\\Shared\\_Layout.cshtml",
+              "RelativeToolTip": "Views\\Shared\\_Layout.cshtml",
+              "ViewState": "AQIAABIAAAAAAAAAAAAAACQAAAAZAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-05T18:45:07.775Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "Persons.cshtml",
+              "DocumentMoniker": "C:\\Private\\PeopleDirectoryApplication\\Views\\PersonManagement\\Persons.cshtml",
+              "RelativeDocumentMoniker": "Views\\PersonManagement\\Persons.cshtml",
+              "ToolTip": "C:\\Private\\PeopleDirectoryApplication\\Views\\PersonManagement\\Persons.cshtml",
+              "RelativeToolTip": "Views\\PersonManagement\\Persons.cshtml",
+              "ViewState": "AQIAADYAAAAAAAAAAAAAAE8AAAAoAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000759|",
+              "WhenOpened": "2024-05-05T18:41:00.23Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PersonManagementController.cs",
+              "DocumentMoniker": "C:\\Private\\PeopleDirectoryApplication\\Controllers\\PersonManagementController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PersonManagementController.cs",
+              "ToolTip": "C:\\Private\\PeopleDirectoryApplication\\Controllers\\PersonManagementController.cs",
+              "RelativeToolTip": "Controllers\\PersonManagementController.cs",
+              "ViewState": "AQIAABAAAAAAAAAAAAAgwBsAAAATAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-05T18:33:26.183Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "AccountController.cs",
+              "DocumentMoniker": "C:\\Private\\PeopleDirectoryApplication\\Controllers\\AccountController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AccountController.cs",
+              "ToolTip": "C:\\Private\\PeopleDirectoryApplication\\Controllers\\AccountController.cs",
+              "RelativeToolTip": "Controllers\\AccountController.cs",
+              "ViewState": "AQIAAB0AAAAAAAAAAAAwwDMAAABBAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-05T18:32:44.519Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "Program.cs",
+              "DocumentMoniker": "C:\\Private\\PeopleDirectoryApplication\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "C:\\Private\\PeopleDirectoryApplication\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABwAAAA2AAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-05T18:28:48.893Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "C:\\Private\\PeopleDirectoryApplication\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "C:\\Private\\PeopleDirectoryApplication\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABAAAAADAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2024-05-05T18:25:49.635Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "README.md",
+              "DocumentMoniker": "C:\\Private\\PeopleDirectoryApplication\\PeopleDirectoryApplication\\README.md",
+              "RelativeDocumentMoniker": "PeopleDirectoryApplication\\README.md",
+              "ToolTip": "C:\\Private\\PeopleDirectoryApplication\\PeopleDirectoryApplication\\README.md",
+              "RelativeToolTip": "PeopleDirectoryApplication\\README.md",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAwAAABXAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001818|",
+              "WhenOpened": "2024-05-05T18:25:02.374Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "HomeController.cs",
+              "DocumentMoniker": "C:\\Private\\PeopleDirectoryApplication\\Controllers\\HomeController.cs",
+              "RelativeDocumentMoniker": "Controllers\\HomeController.cs",
+              "ToolTip": "C:\\Private\\PeopleDirectoryApplication\\Controllers\\HomeController.cs",
+              "RelativeToolTip": "Controllers\\HomeController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAhwBkAAAAwAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-05T18:24:30.985Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "PersonRepository.cs",
+              "DocumentMoniker": "C:\\Private\\PeopleDirectoryApplication\\Repositories\\PersonRepository.cs",
+              "RelativeDocumentMoniker": "Repositories\\PersonRepository.cs",
+              "ToolTip": "C:\\Private\\PeopleDirectoryApplication\\Repositories\\PersonRepository.cs",
+              "RelativeToolTip": "Repositories\\PersonRepository.cs",
+              "ViewState": "AQIAABUAAAAAAAAAAAAwwBkAAAAIAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-05-05T18:24:06.163Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

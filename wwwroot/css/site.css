@@ -1,0 +1,97 @@
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+    }
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+    font-size: 14px;
+}
+
+body {
+    margin-bottom: 60px;
+}
+
+.screen {
+    display: flex;
+    width: 100%;
+    min-height: 80vh;
+    align-items: center;
+    justify-content: center;
+}
+
+.login-layout {
+    max-width: 520px;
+}
+
+.nav-link {
+    color: azure;
+}
+
+.btn {
+    height: 44px;
+    padding: 0 40px;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+tr:hover td {
+    background-color: #31b3f9;
+    color: azure;
+}
+
+.search-div {
+    display: flex;
+    gap: 10px;
+    margin: 30px auto 0;
+    max-width: 600px;
+}
+
+.search-input {
+    flex-grow: 1;
+}
+
+.btn-primary {
+    background-color: #65c9ff;
+    border: none;
+}
+
+#searchButton:hover {
+    background-color: #31b3f9;
+}
+
+.profile-image {
+    width: 100%;
+    max-width: 250px;
+    margin: auto;
+}
+
+    .profile-image img {
+        width: 100%;
+        display: block;
+    }
+
+.form-buttons {
+    display: flex;
+    gap: 8px;
+    width: 100%;
+}
+
+    .form-buttons .btn {
+        flex-grow: 1;
+    }

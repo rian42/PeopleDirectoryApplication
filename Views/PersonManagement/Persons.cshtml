@@ -1,0 +1,135 @@
+﻿@model IEnumerable<Person>
+
+<div class="container">
+    <div id="resultsTableDiv">
+        <h1 class="text-center">All Users</h1>
+        <div class="search-div mb-5">
+            <input type="text" id="searchInput" class="form-control search-input" placeholder="Search by Name">
+            <button type="button" class="btn btn-primary search-button" data-bs-toggle="modal" data-bs-target="#addUserModal">
+                Add Person
+            </button>
+        </div>
+        <table id="resultsTable" class="table table-striped table-bordered">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Email Address</th>
+                </tr>
+            </thead>
+            <tbody id="resultsBody">
+                @foreach (var user in Model)
+                {
+                    <tr onclick="goToProfile('@user.Id')">
+                        <td>@user.Name</td>
+                        <td>@user.Surname </td>
+                        <td>@user.Country  </td>
+                        <td>@user.City  </td>
+                        <td>@user.EmailAddress  </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+
+    <div class="modal fade" id="addUserModal" tabindex="-1" aria-labelledby="addUserModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editUserModalLabel">Edit User</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="addUserForm">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Name</label>
+                            <input type="text" id="name" class="form-control" id="name" value="" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="surname" class="form-label">Surname</label>
+                            <input type="text" id="surname" class="form-control" id="surname" value="" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-select" id="gender" required>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                                <option value="Other">Other</option>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label for="city" class="form-label">City</label>
+                            <input type="text" id="city" class="form-control" id="city" value="" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="country" class="form-label">Country</label>
+                            <input type="text" id="country" class="form-control" id="country" value="" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="emailAddress" class="form-label">Email</label>
+                            <input type="email" id="emailAddress" class="form-control" id="emailAddress" value="" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="mobileNumber" class="form-label">Mobile Number</label>
+                            <input type="text" id="mobileNumber" class="form-control" id="mobileNumber" value="" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-primary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" form="addUserForm" class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('#searchInput').on('keyup', function () {
+                var value = $(this).val().toLowerCase();
+                $('#resultsTable tbody tr').filter(function () {
+                    $(this).toggle($(this).find('td:first').text().toLowerCase().indexOf(value) > -1);
+                });
+            });
+        });
+
+        $(document).ready(function () {
+            $("#addUserForm").submit(function (e) {
+                e.preventDefault();
+
+                var name = $("#name").val();
+                var surname = $("#surname").val();
+                var city = $("#city").val();
+                var gender = $("#gender").val();
+                var country = $("#country").val();
+                var emailAddress = $("#emailAddress").val();
+                var mobileNumber = $("#mobileNumber").val();
+
+                var userToAdd = {
+                    Name: name,
+                    Surname: surname,
+                    City: city,
+                    Country: country,
+                    Gender: gender,
+                    MobileNumber: mobileNumber,
+                    EmailAddress: emailAddress
+                };
+
+                var url = "@Url.Action("AddPerson", "PersonManagement")";
+
+                $.post(url, userToAdd, function (res) {
+                    $("#addUserModal").modal('hide');
+                    window.location = '/PersonManagement/Persons';
+                });
+            });
+        });
+
+        function goToProfile(userId) {
+            window.location = '/PersonManagement/Profile/' + userId;
+        }
+    </script>
+}
