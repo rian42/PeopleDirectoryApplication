@@ -14,7 +14,7 @@ namespace PeopleDirectoryApplication.Data
         {
             using (var serviceScope = applicationBuilder.ApplicationServices.CreateScope())
             {
-                var context = serviceScope.ServiceProvider.GetService<ApplicationDbContext>();
+                var context = serviceScope.ServiceProvider.GetRequiredService<ApplicationDbContext>();
 
                 context.Database.EnsureCreated();
 
@@ -537,16 +537,30 @@ namespace PeopleDirectoryApplication.Data
                     await roleManager.CreateAsync(new IdentityRole(UserRoles.User));
 
                 var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<User>>();
+                var adminSection = config.GetSection("AdminUser");
+                var adminEmail = adminSection["Email"] ?? string.Empty;
+                var adminPassword = adminSection["Password"] ?? string.Empty;
+
+                if (string.IsNullOrWhiteSpace(adminEmail) || string.IsNullOrWhiteSpace(adminPassword))
+                    return;
+
+                var existingAdmin = await userManager.FindByEmailAsync(adminEmail);
+                if (existingAdmin != null)
+                {
+                    if (!await userManager.IsInRoleAsync(existingAdmin, UserRoles.Admin))
+                        await userManager.AddToRoleAsync(existingAdmin, UserRoles.Admin);
+                    return;
+                }
 
                 var newAdminUser = new User()
                 {
-                    UserName = config.GetSection("AdminUser")["UserName"],
-                    Surname = config.GetSection("AdminUser")["Surname"],
-                    Email = config.GetSection("AdminUser")["Email"],
+                    UserName = adminSection["UserName"],
+                    Surname = adminSection["Surname"],
+                    Email = adminEmail,
                     EmailConfirmed = true,
                 };
 
-                await userManager.CreateAsync(newAdminUser, "!Rr1234");
+                await userManager.CreateAsync(newAdminUser, adminPassword);
                 await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
             }
         }

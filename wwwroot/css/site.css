@@ -1,17 +1,24 @@
-@media (min-width: 768px) {
-    html {
-        font-size: 16px;
-    }
-}
-
-html {
-    position: relative;
+html,
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
     min-height: 100%;
-    font-size: 14px;
 }
 
 body {
-    margin-bottom: 60px;
+    background: linear-gradient(180deg, #f7fafc 0%, #eef4fb 100%);
+    color: #1f2937;
+}
+
+.page-shell a {
+    color: #0f4c81;
+}
+
+.page-shell a:hover {
+    color: #0a2f4f;
+}
+
+.card {
+    border-radius: 0.8rem;
 }
 
 .screen {
@@ -23,75 +30,20 @@ body {
 }
 
 .login-layout {
-    max-width: 520px;
-}
-
-.nav-link {
-    color: azure;
-}
-
-.btn {
-    height: 44px;
-    padding: 0 40px;
-    white-space: nowrap;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-table {
-    border-collapse: collapse;
+    max-width: 480px;
     width: 100%;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 30px rgba(15, 23, 42, 0.1);
 }
-
-th, td {
-    padding: 8px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
-}
-
-tr:hover td {
-    background-color: #31b3f9;
-    color: azure;
-}
-
-.search-div {
-    display: flex;
-    gap: 10px;
-    margin: 30px auto 0;
-    max-width: 600px;
-}
-
-.search-input {
-    flex-grow: 1;
-}
-
-.btn-primary {
-    background-color: #65c9ff;
-    border: none;
-}
-
-#searchButton:hover {
-    background-color: #31b3f9;
-}
-
-.profile-image {
-    width: 100%;
-    max-width: 250px;
-    margin: auto;
-}
-
-    .profile-image img {
-        width: 100%;
-        display: block;
-    }
 
 .form-buttons {
     display: flex;
-    gap: 8px;
+    gap: 0.5rem;
     width: 100%;
 }
 
-    .form-buttons .btn {
-        flex-grow: 1;
-    }
+.form-buttons .btn {
+    flex: 1;
+}

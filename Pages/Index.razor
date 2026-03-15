@@ -1,0 +1,219 @@
+@page "/"
+@implements IDisposable
+@inject IPeopleApiClient PeopleApiClient
+@inject NavigationManager NavigationManager
+@inject ILogger<Index> Logger
+
+<PageTitle>People Directory</PageTitle>
+
+<h1 class="mb-3">People Directory</h1>
+<p class="text-muted">Search by first name or surname and filter by country/city.</p>
+
+<div class="row g-2 align-items-end mb-3">
+    <div class="col-md-4 position-relative">
+        <label class="form-label">Name / Surname</label>
+        <input class="form-control" value="@SearchTerm" @oninput="HandleSearchTermInput" placeholder="e.g. Mark" />
+
+        @if (Suggestions.Count > 0)
+        {
+            <ul class="list-group position-absolute w-100 shadow-sm mt-1" style="z-index: 1000;">
+                @foreach (var suggestion in Suggestions)
+                {
+                    <li class="list-group-item list-group-item-action" @onclick="() => NavigateToProfile(suggestion.Id)">
+                        @suggestion.DisplayName
+                    </li>
+                }
+            </ul>
+        }
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">Country</label>
+        <select class="form-select" value="@SelectedCountry" @onchange="HandleCountryChanged">
+            <option value="">All countries</option>
+            @foreach (var country in Countries)
+            {
+                <option value="@country">@country</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-3">
+        <label class="form-label">City</label>
+        <select class="form-select" @bind="SelectedCity" disabled="@(!Cities.Any())">
+            <option value="">All cities</option>
+            @foreach (var city in Cities)
+            {
+                <option value="@city">@city</option>
+            }
+        </select>
+    </div>
+    <div class="col-md-2 d-grid">
+        <button class="btn btn-primary" @onclick="SearchAsync">Search</button>
+    </div>
+</div>
+
+@if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div class="alert alert-danger">@ErrorMessage</div>
+}
+
+@if (SearchResults.Any())
+{
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Country</th>
+                    <th>City</th>
+                    <th>Email</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var person in SearchResults)
+                {
+                    <tr style="cursor: pointer;" @onclick="() => NavigateToProfile(person.Id)">
+                        <td>@person.Name</td>
+                        <td>@person.Surname</td>
+                        <td>@person.Country</td>
+                        <td>@person.City</td>
+                        <td>@person.EmailAddress</td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}
+else if (HasSearched)
+{
+    <div class="alert alert-info">No results found.</div>
+}
+
+@code {
+    private string SearchTerm { get; set; } = string.Empty;
+    private string SelectedCountry { get; set; } = string.Empty;
+    private string SelectedCity { get; set; } = string.Empty;
+    private string? ErrorMessage { get; set; }
+    private CancellationTokenSource? _autocompleteCts;
+
+    private bool HasSearched { get; set; }
+    private List<Person> SearchResults { get; } = new();
+    private List<AutocompleteSuggestion> Suggestions { get; } = new();
+    private List<string> Countries { get; } = new();
+    private List<string> Cities { get; } = new();
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            var countries = await PeopleApiClient.GetCountriesAsync();
+            Countries.AddRange(countries);
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.LogWarning(ex, "Unable to load country list from API");
+            ErrorMessage = "Unable to load countries right now.";
+        }
+    }
+
+    private async Task HandleSearchTermInput(ChangeEventArgs args)
+    {
+        SearchTerm = args.Value?.ToString() ?? string.Empty;
+        Suggestions.Clear();
+        ErrorMessage = null;
+        CancelAutocomplete();
+
+        if (string.IsNullOrWhiteSpace(SearchTerm) || SearchTerm.Trim().Length < 2)
+        {
+            return;
+        }
+
+        _autocompleteCts = new CancellationTokenSource();
+
+        try
+        {
+            await Task.Delay(150, _autocompleteCts.Token);
+            var results = await PeopleApiClient.AutocompleteAsync(SearchTerm.Trim(), 8, _autocompleteCts.Token);
+            Suggestions.AddRange(results);
+        }
+        catch (OperationCanceledException)
+        {
+            // ignored
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.LogWarning(ex, "Autocomplete API request failed for query '{Query}'", SearchTerm);
+            ErrorMessage = "Unable to load suggestions right now.";
+        }
+    }
+
+    private async Task HandleCountryChanged(ChangeEventArgs args)
+    {
+        SelectedCountry = args.Value?.ToString() ?? string.Empty;
+        SelectedCity = string.Empty;
+        Cities.Clear();
+
+        if (string.IsNullOrWhiteSpace(SelectedCountry))
+        {
+            return;
+        }
+
+        try
+        {
+            var cities = await PeopleApiClient.GetCitiesByCountryAsync(SelectedCountry);
+            Cities.AddRange(cities);
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.LogWarning(ex, "Unable to load cities for country '{Country}'", SelectedCountry);
+            ErrorMessage = "Unable to load cities for the selected country.";
+        }
+    }
+
+    private async Task SearchAsync()
+    {
+        ErrorMessage = null;
+        Suggestions.Clear();
+        HasSearched = true;
+        SearchResults.Clear();
+
+        if (string.IsNullOrWhiteSpace(SearchTerm))
+        {
+            ErrorMessage = "Enter a search term.";
+            return;
+        }
+
+        try
+        {
+            var results = await PeopleApiClient.SearchAsync(SearchTerm, SelectedCountry, SelectedCity);
+            SearchResults.AddRange(results);
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.LogWarning(ex, "Search API request failed for query '{Query}'", SearchTerm);
+            ErrorMessage = "Unable to run search right now.";
+        }
+    }
+
+    private void NavigateToProfile(int personId)
+    {
+        NavigationManager.NavigateTo($"/profile/{personId}");
+    }
+
+    private void CancelAutocomplete()
+    {
+        if (_autocompleteCts is null)
+        {
+            return;
+        }
+
+        _autocompleteCts.Cancel();
+        _autocompleteCts.Dispose();
+        _autocompleteCts = null;
+    }
+
+    public void Dispose()
+    {
+        CancelAutocomplete();
+    }
+}

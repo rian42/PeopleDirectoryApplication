@@ -1,0 +1,84 @@
+@page "/profile/{PersonId:int}"
+@inject IPeopleApiClient PeopleApiClient
+@inject ILogger<Profile> Logger
+
+<PageTitle>Person Profile</PageTitle>
+
+@if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div class="alert alert-danger">@ErrorMessage</div>
+}
+else if (Person is null)
+{
+    <p>Loading profile...</p>
+}
+else
+{
+    <div class="card border-0 shadow-sm">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-4 text-center">
+                    <img src="@GetProfilePicture(Person)" alt="Profile" class="img-fluid rounded mb-3" />
+                </div>
+                <div class="col-md-8">
+                    <h2 class="mb-3">@Person.Name @Person.Surname</h2>
+                    <dl class="row">
+                        <dt class="col-sm-4">Gender</dt>
+                        <dd class="col-sm-8">@Person.Gender</dd>
+
+                        <dt class="col-sm-4">Country</dt>
+                        <dd class="col-sm-8">@Person.Country</dd>
+
+                        <dt class="col-sm-4">City</dt>
+                        <dd class="col-sm-8">@Person.City</dd>
+
+                        <dt class="col-sm-4">Email</dt>
+                        <dd class="col-sm-8">@Person.EmailAddress</dd>
+
+                        <dt class="col-sm-4">Mobile</dt>
+                        <dd class="col-sm-8">@Person.MobileNumber</dd>
+                    </dl>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    [Parameter]
+    public int PersonId { get; set; }
+
+    private Person? Person { get; set; }
+    private string? ErrorMessage { get; set; }
+
+    protected override async Task OnParametersSetAsync()
+    {
+        ErrorMessage = null;
+        Person = null;
+
+        if (PersonId <= 0)
+        {
+            ErrorMessage = "Invalid profile id.";
+            return;
+        }
+
+        try
+        {
+            Person = await PeopleApiClient.GetByIdAsync(PersonId);
+            if (Person is null)
+            {
+                ErrorMessage = "Person not found.";
+            }
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.LogWarning(ex, "Unable to load person profile {PersonId}", PersonId);
+            ErrorMessage = "Unable to load profile details right now.";
+        }
+    }
+
+    private static string GetProfilePicture(Person person)
+        => string.IsNullOrWhiteSpace(person.ProfilePicture)
+            ? "https://www.avatarsinpixels.com/Public/images/previews/minipix4.png"
+            : person.ProfilePicture;
+}

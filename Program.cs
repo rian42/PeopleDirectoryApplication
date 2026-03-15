@@ -1,41 +1,95 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
+using PeopleDirectoryApplication.Clients;
+using PeopleDirectoryApplication.Application;
 using PeopleDirectoryApplication.Data;
+using PeopleDirectoryApplication.Infrastructure;
 using PeopleDirectoryApplication.Models;
-using PeopleDirectoryApplication.Repositories;
-using PeopleDirectoryApplication.Repositories.Interfaces;
+using PeopleDirectoryApplication.Models.Identity;
+using PeopleDirectoryApplication.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
-builder.Services.AddDbContext<ApplicationDbContext>(options =>
+builder.Services.AddRazorPages();
+builder.Services.AddServerSideBlazor();
+builder.Services.AddHttpContextAccessor();
+builder.Services.AddTransient<AuthCookieForwardingHandler>();
+builder.Services.AddHttpClient<IPeopleApiClient, PeopleApiClient>()
+    .AddHttpMessageHandler<AuthCookieForwardingHandler>();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
 {
-    options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection"));
+    options.SwaggerDoc("v1", new OpenApiInfo
+    {
+        Title = "People Directory API",
+        Version = "v1",
+        Description = "People search and admin management API.",
+    });
 });
-builder.Services.AddScoped<IPersonRepository, PersonRepository>();
-builder.Services.AddSingleton<IConfiguration>(builder.Configuration);
+
+builder.Services.AddApplicationServices();
+builder.Services.AddInfrastructureServices(builder.Configuration);
+
 builder.Services.AddIdentity<User, IdentityRole>()
     .AddEntityFrameworkStores<ApplicationDbContext>();
-builder.Services.AddMemoryCache();
-builder.Services.AddSession();
+
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-    .AddCookie();
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.AccessDeniedPath = "/access-denied";
+        options.Events = new CookieAuthenticationEvents
+        {
+            OnRedirectToLogin = context =>
+            {
+                if (context.Request.Path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Response.StatusCode = StatusCodes.Status401Unauthorized;
+                    return Task.CompletedTask;
+                }
+
+                context.Response.Redirect(context.RedirectUri);
+                return Task.CompletedTask;
+            },
+            OnRedirectToAccessDenied = context =>
+            {
+                if (context.Request.Path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase))
+                {
+                    context.Response.StatusCode = StatusCodes.Status403Forbidden;
+                    return Task.CompletedTask;
+                }
+
+                context.Response.Redirect(context.RedirectUri);
+                return Task.CompletedTask;
+            },
+        };
+    });
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy(AuthorizationPolicies.AdminOnly, policy =>
+    {
+        policy.RequireAuthenticatedUser();
+        policy.RequireRole(UserRoles.Admin);
+    });
+});
 
 var app = builder.Build();
 
 
 if (args.Length == 1 && args[0].ToLower() == "seeddata")
 {
-    //Seed.SeedPersonData(app);
-    //await Seed.SeedRolesAsync(app, builder.Configuration);
+    Seed.SeedPersonData(app);
+    await Seed.SeedRolesAsync(app, builder.Configuration);
+    return;
 }
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler("/Error");
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
@@ -44,11 +98,23 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseSwagger();
+app.UseSwaggerUI(c =>
+{
+    c.SwaggerEndpoint("/swagger/v1/swagger.json", "People Directory API v1");
+    c.RoutePrefix = "swagger";
+});
 app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllerRoute(
-    name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
+    name: "account",
+    pattern: "Account/{action=Login}/{id?}",
+    defaults: new { controller = "Account" });
+
+app.MapControllers();
+app.MapRazorPages();
+app.MapBlazorHub();
+app.MapFallbackToPage("/_Host");
 
 app.Run();

@@ -1,0 +1,280 @@
+@page "/admin/people"
+@attribute [Authorize(Policy = AuthorizationPolicies.AdminOnly)]
+@inject IPeopleApiClient PeopleApiClient
+@inject ILogger<AdminPeople> Logger
+
+<PageTitle>Admin - People</PageTitle>
+
+<h1 class="mb-3">Admin: People Management</h1>
+<p class="text-muted">Create, update, and delete people records. Updates and creates send notification emails.</p>
+
+@if (!string.IsNullOrWhiteSpace(ErrorMessage))
+{
+    <div class="alert alert-danger">@ErrorMessage</div>
+}
+
+@if (!string.IsNullOrWhiteSpace(SuccessMessage))
+{
+    <div class="alert alert-success">@SuccessMessage</div>
+}
+
+<div class="row g-4">
+    <div class="col-lg-7">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Directory Records</h5>
+                <div class="table-responsive">
+                    <table class="table table-striped align-middle">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Surname</th>
+                                <th>Country</th>
+                                <th>City</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var person in People)
+                            {
+                                <tr>
+                                    <td>@person.Name</td>
+                                    <td>@person.Surname</td>
+                                    <td>@person.Country</td>
+                                    <td>@person.City</td>
+                                    <td class="text-end">
+                                        <button class="btn btn-sm btn-outline-primary me-2" @onclick="() => StartEdit(person)">Edit</button>
+                                        <button class="btn btn-sm btn-outline-danger" @onclick="() => DeleteAsync(person.Id)">Delete</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-lg-5">
+        <div class="card border-0 shadow-sm">
+            <div class="card-body">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="card-title mb-0">@FormTitle</h5>
+                    <button class="btn btn-sm btn-outline-secondary" @onclick="StartCreate">New</button>
+                </div>
+
+                <EditForm Model="FormModel" OnValidSubmit="SaveAsync">
+                    <DataAnnotationsValidator />
+                    <ValidationSummary />
+
+                    <div class="mb-2">
+                        <label class="form-label">Name</label>
+                        <InputText class="form-control" @bind-Value="FormModel.Name" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Surname</label>
+                        <InputText class="form-control" @bind-Value="FormModel.Surname" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Gender</label>
+                        <InputSelect class="form-select" @bind-Value="FormModel.Gender">
+                            @foreach (var gender in Enum.GetValues<PeopleDirectoryApplication.Data.Enum.Gender>())
+                            {
+                                <option value="@gender">@gender</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Country</label>
+                        <InputSelect class="form-select" @bind-Value="FormModel.Country" @onchange="HandleCountryChanged">
+                            <option value="">Select a country</option>
+                            @foreach (var country in Countries)
+                            {
+                                <option value="@country">@country</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">City</label>
+                        <InputSelect class="form-select" @bind-Value="FormModel.City" disabled="@(!Cities.Any())">
+                            <option value="">Select a city</option>
+                            @foreach (var city in Cities)
+                            {
+                                <option value="@city">@city</option>
+                            }
+                        </InputSelect>
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Email</label>
+                        <InputText class="form-control" @bind-Value="FormModel.EmailAddress" />
+                    </div>
+                    <div class="mb-2">
+                        <label class="form-label">Mobile Number</label>
+                        <InputText class="form-control" @bind-Value="FormModel.MobileNumber" />
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Profile Picture URL</label>
+                        <InputText class="form-control" @bind-Value="FormModel.ProfilePicture" />
+                    </div>
+
+                    <div class="d-grid">
+                        <button class="btn btn-primary" type="submit">@SubmitButtonText</button>
+                    </div>
+                </EditForm>
+            </div>
+        </div>
+    </div>
+</div>
+
+@code {
+    private readonly List<Person> People = new();
+    private readonly List<string> Countries = new();
+    private readonly List<string> Cities = new();
+
+    private PersonUpsertRequest FormModel { get; set; } = new();
+    private int? EditingPersonId { get; set; }
+
+    private string? ErrorMessage { get; set; }
+    private string? SuccessMessage { get; set; }
+
+    private string FormTitle => EditingPersonId.HasValue ? $"Edit Person #{EditingPersonId}" : "Create Person";
+    private string SubmitButtonText => EditingPersonId.HasValue ? "Save Changes" : "Create Person";
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            await ReloadAsync();
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.LogWarning(ex, "Unable to load admin people data from API");
+            ErrorMessage = "Unable to load people data right now.";
+        }
+    }
+
+    private async Task ReloadAsync()
+    {
+        People.Clear();
+        Countries.Clear();
+        Cities.Clear();
+
+        var people = await PeopleApiClient.GetAllAsync();
+        var countries = await PeopleApiClient.GetCountriesAsync();
+
+        People.AddRange(people);
+        Countries.AddRange(countries);
+    }
+
+    private void StartCreate()
+    {
+        EditingPersonId = null;
+        FormModel = new PersonUpsertRequest();
+        Cities.Clear();
+    }
+
+    private async Task StartEdit(Person person)
+    {
+        EditingPersonId = person.Id;
+        FormModel = new PersonUpsertRequest
+        {
+            Name = person.Name,
+            Surname = person.Surname,
+            Country = person.Country,
+            City = person.City,
+            Gender = person.Gender,
+            EmailAddress = person.EmailAddress,
+            MobileNumber = person.MobileNumber,
+            ProfilePicture = person.ProfilePicture,
+            RowVersion = person.RowVersion,
+        };
+
+        Cities.Clear();
+        if (!string.IsNullOrWhiteSpace(FormModel.Country))
+        {
+            var cities = await PeopleApiClient.GetCitiesByCountryAsync(FormModel.Country);
+            Cities.AddRange(cities);
+        }
+    }
+
+    private async Task HandleCountryChanged(ChangeEventArgs _)
+    {
+        FormModel.City = string.Empty;
+        Cities.Clear();
+
+        if (string.IsNullOrWhiteSpace(FormModel.Country))
+        {
+            return;
+        }
+
+        var cities = await PeopleApiClient.GetCitiesByCountryAsync(FormModel.Country);
+        Cities.AddRange(cities);
+    }
+
+    private async Task SaveAsync()
+    {
+        ErrorMessage = null;
+        SuccessMessage = null;
+
+        try
+        {
+            if (EditingPersonId.HasValue)
+            {
+                var updated = await PeopleApiClient.UpdateAsync(EditingPersonId.Value, FormModel);
+                if (updated is null)
+                {
+                    ErrorMessage = "Unable to update person record.";
+                    return;
+                }
+
+                await ReloadAsync();
+                SuccessMessage = "Person updated successfully.";
+            }
+            else
+            {
+                await PeopleApiClient.CreateAsync(FormModel);
+                await ReloadAsync();
+                SuccessMessage = "Person created successfully.";
+            }
+        }
+        catch (PeopleDirectoryApplication.Application.Exceptions.ConcurrencyConflictException)
+        {
+            ErrorMessage = "This record was modified by another user. Reload and try again.";
+            await ReloadAsync();
+            return;
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.LogWarning(ex, "Admin save API request failed. PersonId: {PersonId}", EditingPersonId);
+            ErrorMessage = "Unable to save changes right now.";
+            return;
+        }
+
+        StartCreate();
+    }
+
+    private async Task DeleteAsync(int personId)
+    {
+        ErrorMessage = null;
+        SuccessMessage = null;
+
+        try
+        {
+            var deleted = await PeopleApiClient.DeleteAsync(personId);
+            if (!deleted)
+            {
+                ErrorMessage = "Delete failed. Record may already be removed.";
+                return;
+            }
+
+            await ReloadAsync();
+            SuccessMessage = "Person deleted successfully.";
+        }
+        catch (HttpRequestException ex)
+        {
+            Logger.LogWarning(ex, "Admin delete API request failed for person {PersonId}", personId);
+            ErrorMessage = "Unable to delete the record right now.";
+            return;
+        }
+    }
+}
