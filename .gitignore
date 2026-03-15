@@ -1,0 +1,22 @@
+# Build artifacts
+**/bin/
+**/obj/
+
+# IDE/user settings
+.vs/
+*.user
+*.suo
+
+# Node artifacts
+node_modules/
+
+# Test output
+TestResults/
+
+# ASP.NET logs/data
+*.db
+*.db-shm
+*.db-wal
+
+# Tooling caches
+*.cache
