@@ -1,4 +1,4 @@
-namespace PeopleDirectoryApplication.Security;
+namespace PeopleDirectoryApplication.Api.Security;
 
 public static class AuthorizationPolicies
 {

@@ -1,18 +1,20 @@
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.OpenApi.Models;
+using PeopleDirectoryApplication.Api.Controllers;
+using PeopleDirectoryApplication.Api.Security;
 using PeopleDirectoryApplication.Clients;
 using PeopleDirectoryApplication.Application;
 using PeopleDirectoryApplication.Data;
 using PeopleDirectoryApplication.Infrastructure;
 using PeopleDirectoryApplication.Models;
 using PeopleDirectoryApplication.Models.Identity;
-using PeopleDirectoryApplication.Security;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
+builder.Services.AddControllersWithViews()
+    .AddApplicationPart(typeof(PeopleApiController).Assembly);
 builder.Services.AddRazorPages();
 builder.Services.AddServerSideBlazor();
 builder.Services.AddHttpContextAccessor();

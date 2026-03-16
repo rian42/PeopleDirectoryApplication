@@ -1,11 +1,13 @@
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using PeopleDirectoryApplication.Application.Contracts.Services;
 using PeopleDirectoryApplication.Application.Exceptions;
 using PeopleDirectoryApplication.Application.Models;
-using PeopleDirectoryApplication.Security;
+using PeopleDirectoryApplication.Api.Security;
 
-namespace PeopleDirectoryApplication.Controllers;
+namespace PeopleDirectoryApplication.Api.Controllers;
 
 [ApiController]
 [Route("api/people")]
