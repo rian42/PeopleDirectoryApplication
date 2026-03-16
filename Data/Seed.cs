@@ -538,6 +538,7 @@ namespace PeopleDirectoryApplication.Data
 
                 var userManager = serviceScope.ServiceProvider.GetRequiredService<UserManager<User>>();
                 var adminSection = config.GetSection("AdminUser");
+                var adminUserName = adminSection["UserName"];
                 var adminEmail = adminSection["Email"] ?? string.Empty;
                 var adminPassword = adminSection["Password"] ?? string.Empty;
 
@@ -548,21 +549,37 @@ namespace PeopleDirectoryApplication.Data
                 if (existingAdmin != null)
                 {
                     if (!await userManager.IsInRoleAsync(existingAdmin, UserRoles.Admin))
-                        await userManager.AddToRoleAsync(existingAdmin, UserRoles.Admin);
+                    {
+                        var addExistingAdminToRole = await userManager.AddToRoleAsync(existingAdmin, UserRoles.Admin);
+                        EnsureIdentityOperationSucceeded(addExistingAdminToRole, $"assign '{adminEmail}' to '{UserRoles.Admin}' role");
+                    }
+
                     return;
                 }
 
                 var newAdminUser = new User()
                 {
-                    UserName = adminSection["UserName"],
+                    UserName = string.IsNullOrWhiteSpace(adminUserName) ? adminEmail : adminUserName,
                     Surname = adminSection["Surname"],
                     Email = adminEmail,
                     EmailConfirmed = true,
                 };
 
-                await userManager.CreateAsync(newAdminUser, adminPassword);
-                await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
+                var createAdminResult = await userManager.CreateAsync(newAdminUser, adminPassword);
+                EnsureIdentityOperationSucceeded(createAdminResult, $"create admin user '{adminEmail}'");
+
+                var addAdminToRoleResult = await userManager.AddToRoleAsync(newAdminUser, UserRoles.Admin);
+                EnsureIdentityOperationSucceeded(addAdminToRoleResult, $"assign '{adminEmail}' to '{UserRoles.Admin}' role");
             }
+        }
+
+        private static void EnsureIdentityOperationSucceeded(IdentityResult result, string operation)
+        {
+            if (result.Succeeded)
+                return;
+
+            var errors = string.Join("; ", result.Errors.Select(error => $"{error.Code}: {error.Description}"));
+            throw new InvalidOperationException($"Failed to {operation}. {errors}");
         }
     }
 }
